@@ -8,7 +8,8 @@ import java.util.Scanner;
 public class AsciiMirror {
 
     private final Scanner scanner;
-    private final List<String> lines;
+    private List<String> lines;
+    private List<String> mirrorLines;
     public AsciiMirror(Scanner scanner) {
         this.scanner = scanner;
         this.lines = new ArrayList<>();
@@ -21,10 +22,16 @@ public class AsciiMirror {
         try {
             new FileHandler(filepath, this.lines);
             modifyLines();
+            reverseLines();
             printMirror();
         } catch (IOException e) {
             System.out.println("File not found!");
         }
+    }
+
+    private void reverseLines() {
+        StringReverser stringReverser = new StringReverser();
+        this.mirrorLines = stringReverser.reverseLines(this.lines);
     }
 
     private void modifyLines() {
@@ -43,6 +50,8 @@ public class AsciiMirror {
     }
 
     private void printMirror() {
-        this.lines.forEach(line -> System.out.printf("%1$s | %1$s%n", line));
+        for (int i = 0; i < this.lines.size(); i++) {
+            System.out.printf("%1$s | %2$s%n", this.lines.get(i), this.mirrorLines.get(i));
+        }
     }
 }
